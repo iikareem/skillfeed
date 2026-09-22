@@ -23,8 +23,13 @@ export const metadata: Metadata = {
     "Pull today's tech writing, score it against your skills with Jev, and read what matters first.",
   applicationName: "Skillfeed",
   icons: {
-    icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "32x32" },
+      { url: "/logo.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
     title: "Skillfeed — a feed ranked to your skills",
