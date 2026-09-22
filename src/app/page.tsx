@@ -370,7 +370,7 @@ async function rankWithProgress(
 export default function HomePage() {
   const [summary, setSummary] = useState(DEFAULT_SUMMARY);
   const [avoid, setAvoid] = useState(DEFAULT_AVOID);
-  const [sources, setSources] = useState<ArticleSourceId[]>([...SOURCE_ORDER]);
+  const [sources, setSources] = useState<ArticleSourceId[]>(["hacker-news"]);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState<LiveProgress | null>(null);
   const [error, setError] = useState<string | null>(null);
