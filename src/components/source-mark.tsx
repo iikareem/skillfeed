@@ -239,10 +239,10 @@ export function SourcePicker({
     <fieldset className="source-picker" disabled={disabled}>
       <div className="source-picker-head">
         <div>
-          <legend className="text-sm font-semibold text-ink">
+          <legend className="text-[0.95rem] font-semibold text-ink sm:text-sm">
             Platforms to use
           </legend>
-          <p className="mt-1 text-xs leading-relaxed text-muted">
+          <p className="mt-1.5 text-sm leading-relaxed text-muted sm:text-xs">
             Tap to turn sources on or off. Only{" "}
             <span className="text-ink-soft">in use</span> platforms are fetched
             and scored.

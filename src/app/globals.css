@@ -174,9 +174,9 @@ body {
   border-radius: 0.5rem;
   background: var(--surface-2);
   color: var(--ink);
-  padding: 0.7rem 0.85rem;
+  padding: 0.85rem 0.95rem;
   font-size: 1rem; /* avoid iOS zoom on focus */
-  line-height: 1.55;
+  line-height: 1.6;
   outline: none;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
@@ -321,7 +321,7 @@ body {
 
 .source-picker {
   margin: 0;
-  padding: 0.7rem;
+  padding: 0.9rem;
   border: 1px solid var(--line);
   border-radius: 0.75rem;
   background: color-mix(in srgb, var(--bg-deep) 55%, var(--surface));
@@ -343,8 +343,8 @@ body {
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.5rem 0.75rem;
-  margin-bottom: 0.7rem;
+  gap: 0.65rem 0.85rem;
+  margin-bottom: 0.85rem;
 }
 
 .source-picker-actions {
@@ -355,9 +355,9 @@ body {
 }
 
 .source-picker-count {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--signal);
 }
@@ -366,9 +366,9 @@ body {
   border: 0;
   background: transparent;
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
   padding: 0.35rem 0;
@@ -387,21 +387,21 @@ body {
 .source-picker-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.45rem;
+  gap: 0.55rem;
 }
 
 .source-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.4rem;
+  gap: 0.5rem;
   width: 100%;
-  min-height: 3.25rem;
+  min-height: 3.5rem;
   border: 1px solid var(--line);
   border-radius: 0.6rem;
   background: color-mix(in srgb, var(--surface-2) 80%, transparent);
   color: var(--muted);
-  padding: 0.55rem 0.55rem;
+  padding: 0.7rem 0.65rem;
   text-align: left;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -417,6 +417,7 @@ body {
 @media (min-width: 640px) {
   .source-toggle {
     gap: 0.55rem;
+    min-height: 3.25rem;
     padding: 0.65rem 0.7rem;
   }
 }
@@ -424,23 +425,23 @@ body {
 .source-toggle-main {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.55rem;
   min-width: 0;
 }
 
 .source-toggle-copy {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.2rem;
   min-width: 0;
 }
 
 .source-toggle-name {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   color: inherit;
-  line-height: 1.15;
+  line-height: 1.25;
 }
 
 @media (min-width: 640px) {
@@ -450,7 +451,7 @@ body {
 }
 
 .source-toggle-state {
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -540,7 +541,12 @@ body {
   }
 
   .source-picker-head > div:first-child p {
-    max-width: 16rem;
+    max-width: none;
+  }
+
+  .btn-primary {
+    font-size: 0.95rem;
+    padding: 0.95rem 1.25rem;
   }
 }
 
@@ -551,20 +557,20 @@ body {
   border: 1px solid var(--line);
   border-radius: 0.45rem;
   background: color-mix(in srgb, var(--surface-2) 88%, transparent);
-  padding: 0.35rem 0.55rem 0.35rem 0.35rem;
+  padding: 0.4rem 0.6rem 0.4rem 0.4rem;
   color: var(--ink-soft);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  line-height: 1;
+  line-height: 1.15;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
 .source-badge-sm {
-  padding: 0.28rem 0.5rem 0.28rem 0.28rem;
-  font-size: 0.65rem;
-  gap: 0.35rem;
+  padding: 0.32rem 0.55rem 0.32rem 0.32rem;
+  font-size: 0.68rem;
+  gap: 0.4rem;
 }
 
 .source-badge-label {
@@ -594,12 +600,12 @@ body {
   border: 1px solid var(--line);
   border-radius: 0.3rem;
   background: color-mix(in srgb, var(--surface-2) 70%, transparent);
-  padding: 0.2rem 0.45rem;
+  padding: 0.28rem 0.55rem;
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 .result-row {

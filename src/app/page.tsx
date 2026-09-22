@@ -170,7 +170,7 @@ function ResultRow({
 }) {
   return (
     <article
-      className="result-row anim-rise grid grid-cols-[2.25rem_1fr] gap-x-3 gap-y-2.5 border-b border-line py-4 sm:grid-cols-[3.25rem_1fr_auto] sm:gap-x-6 sm:gap-y-3 sm:py-6"
+      className="result-row anim-rise grid grid-cols-[2.5rem_1fr] gap-x-3.5 gap-y-3 border-b border-line py-5 sm:grid-cols-[3.25rem_1fr_auto] sm:gap-x-6 sm:gap-y-3 sm:py-6"
       style={{ animationDelay: `${0.04 * rank}s` }}
     >
       <div className="font-display text-xl font-bold tabular-nums text-muted/70 sm:text-2xl">
@@ -178,10 +178,10 @@ function ResultRow({
       </div>
 
       <div className="min-w-0">
-        <div className="mb-2 flex flex-wrap items-center gap-2 sm:mb-2.5">
+        <div className="mb-2.5 flex flex-wrap items-center gap-2">
           <SourceBadge source={article.source} size="sm" />
           {article.author ? (
-            <span className="max-w-full truncate text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+            <span className="max-w-full truncate text-xs font-semibold uppercase tracking-[0.1em] text-muted">
               {article.author}
             </span>
           ) : null}
@@ -190,18 +190,18 @@ function ResultRow({
           href={article.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group inline-flex max-w-full items-start gap-2 font-display text-lg font-semibold leading-snug tracking-tight text-ink transition-colors hover:text-signal sm:text-2xl"
+          className="group inline-flex max-w-full items-start gap-2 font-display text-[1.2rem] font-semibold leading-snug tracking-tight text-ink transition-colors hover:text-signal sm:text-2xl"
         >
           <span>{article.title}</span>
-          <ExternalArrow className="mt-1 size-3.5 shrink-0 text-muted opacity-0 transition-opacity group-hover:opacity-100 sm:mt-1.5" />
+          <ExternalArrow className="mt-1.5 size-3.5 shrink-0 text-muted opacity-0 transition-opacity group-hover:opacity-100" />
         </a>
         {article.description ? (
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft sm:text-[15px]">
+          <p className="mt-2.5 max-w-2xl text-[0.95rem] leading-relaxed text-ink-soft sm:text-[15px]">
             {article.description}
           </p>
         ) : null}
         {article.tags.length > 0 ? (
-          <ul className="mt-2.5 flex flex-wrap gap-1.5 sm:mt-3">
+          <ul className="mt-3 flex flex-wrap gap-2">
             {article.tags.slice(0, 6).map((tag) => (
               <li key={tag} className="tag-chip">
                 {tag}
@@ -211,7 +211,7 @@ function ResultRow({
         ) : null}
       </div>
 
-      <div className="col-span-2 pl-9 sm:col-span-1 sm:self-start sm:justify-self-end sm:pl-0">
+      <div className="col-span-2 pl-10 sm:col-span-1 sm:self-start sm:justify-self-end sm:pl-0">
         <ScoreMeter score={article.verdict.score} index={rank} />
       </div>
     </article>
@@ -238,10 +238,12 @@ function RankingProgress({
   const tip = TIPS[tipIndex];
 
   return (
-    <div className="anim-rise panel rounded-xl px-4 py-5 sm:px-6" aria-live="polite">
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-ink">{progress.message}</p>
-        <span className="font-display text-sm font-bold tabular-nums text-signal">
+    <div className="anim-rise panel rounded-xl px-5 py-6 sm:px-6" aria-live="polite">
+      <div className="mb-5 flex items-center justify-between gap-3">
+        <p className="text-[0.95rem] font-semibold leading-snug text-ink sm:text-sm">
+          {progress.message}
+        </p>
+        <span className="font-display text-base font-bold tabular-nums text-signal sm:text-sm">
           {pct}%
         </span>
       </div>
@@ -306,7 +308,7 @@ function RankingProgress({
 
       <p
         key={tipIndex}
-        className="tip-swap max-w-xl text-sm leading-relaxed text-muted"
+        className="tip-swap max-w-xl text-[0.95rem] leading-relaxed text-muted sm:text-sm"
       >
         <span className="mr-2 font-semibold text-ink-soft">While you wait</span>
         {tip}
@@ -446,10 +448,10 @@ export default function HomePage() {
 
   return (
     <div className="skillfeed-shell">
-      <header className="site-header mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:gap-4 sm:px-8 sm:pt-6">
+      <header className="site-header mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-5 pt-[max(1.15rem,env(safe-area-inset-top))] sm:gap-4 sm:px-8 sm:pt-6">
         <a href="/" className="brand-lockup" aria-label="Skillfeed home">
-          <LogoMark className="size-7 sm:size-8" />
-          <BrandMark className="text-base font-bold text-ink sm:text-lg" />
+          <LogoMark className="size-8" />
+          <BrandMark className="text-lg font-bold text-ink" />
         </a>
         <div className="flex items-center gap-3 sm:gap-4">
           <p className="hidden text-xs font-semibold uppercase tracking-[0.16em] text-muted md:block">
@@ -469,16 +471,16 @@ export default function HomePage() {
       </header>
 
       <main>
-        <section className="hero-grid mx-auto grid w-full max-w-6xl gap-6 px-4 pb-6 pt-4 sm:gap-10 sm:px-8 sm:pb-8 sm:pt-8 lg:grid-cols-[1fr_0.95fr] lg:items-start lg:gap-12 lg:pt-10">
+        <section className="hero-grid mx-auto grid w-full max-w-6xl gap-8 px-5 pb-8 pt-5 sm:gap-10 sm:px-8 sm:pb-8 sm:pt-8 lg:grid-cols-[1fr_0.95fr] lg:items-start lg:gap-12 lg:pt-10">
           <div className="hero-copy lg:sticky lg:top-8 lg:pt-1">
-            <p className="anim-rise mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-signal sm:mb-3 sm:text-xs">
+            <p className="anim-rise mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-signal sm:text-xs">
               Daily reading, skill-matched
             </p>
-            <h1 className="anim-rise anim-rise-delay-1 flex items-center gap-2.5 text-[clamp(2.15rem,9vw,4.25rem)] font-extrabold leading-none text-ink sm:gap-3.5">
-              <LogoMark className="size-[clamp(2rem,8vw,3.5rem)]" />
+            <h1 className="anim-rise anim-rise-delay-1 flex items-center gap-3 text-[clamp(2.35rem,10vw,4.25rem)] font-extrabold leading-[1.05] text-ink sm:gap-3.5">
+              <LogoMark className="size-[clamp(2.15rem,8.5vw,3.5rem)]" />
               <BrandMark />
             </h1>
-            <p className="anim-rise anim-rise-delay-2 mt-3 max-w-md text-[0.95rem] leading-relaxed text-ink-soft sm:mt-4 sm:text-lg">
+            <p className="anim-rise anim-rise-delay-2 mt-4 max-w-md text-base leading-[1.65] text-ink-soft sm:text-lg">
               A feed ranked to your skills. Tell Skillfeed what you know—and
               what to skip—then get today&apos;s best matches first.
             </p>
@@ -493,29 +495,33 @@ export default function HomePage() {
 
           <form
             onSubmit={onSubmit}
-            className="anim-rise anim-rise-delay-1 panel flex flex-col gap-3.5 rounded-xl p-3.5 sm:gap-5 sm:p-6"
+            className="anim-rise anim-rise-delay-1 panel flex flex-col gap-5 rounded-xl p-5 sm:p-6"
           >
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-semibold text-ink">Your skills</span>
+            <label className="flex flex-col gap-2.5">
+              <span className="text-[0.95rem] font-semibold text-ink sm:text-sm">
+                Your skills
+              </span>
               <textarea
                 value={summary}
                 onChange={(e) => setSummary(e.currentTarget.value)}
-                rows={3}
+                rows={4}
                 disabled={loading}
                 className="field"
                 placeholder="Who you are and what you’re deep in—stack, role, topics that matter."
               />
             </label>
 
-            <label className="flex flex-col gap-2">
+            <label className="flex flex-col gap-2.5">
               <div className="flex items-baseline justify-between gap-3">
-                <span className="text-sm font-semibold text-ink">Avoid</span>
-                <span className="text-xs text-muted">optional</span>
+                <span className="text-[0.95rem] font-semibold text-ink sm:text-sm">
+                  Avoid
+                </span>
+                <span className="text-sm text-muted">optional</span>
               </div>
               <textarea
                 value={avoid}
                 onChange={(e) => setAvoid(e.currentTarget.value)}
-                rows={2}
+                rows={3}
                 disabled={loading}
                 className="field"
                 placeholder="Topics or formats to push down the list."
@@ -528,7 +534,7 @@ export default function HomePage() {
               disabled={loading}
             />
 
-            <div className="form-actions flex flex-col gap-2.5 pt-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+            <div className="form-actions flex flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               <button
                 type="submit"
                 disabled={loading || !canSubmit}
@@ -536,7 +542,7 @@ export default function HomePage() {
               >
                 {loading ? "Ranking…" : "Rank my feed"}
               </button>
-              <span className="text-center text-xs text-muted sm:text-left sm:text-sm">
+              <span className="text-center text-sm leading-relaxed text-muted sm:text-left">
                 Using {sources.length} of 4 · Jev batches of 7
               </span>
             </div>
@@ -554,7 +560,7 @@ export default function HomePage() {
 
         <section
           id="results"
-          className="mx-auto w-full max-w-6xl px-4 pb-[max(5rem,env(safe-area-inset-bottom))] pt-2 sm:px-8 sm:pb-20"
+          className="mx-auto w-full max-w-6xl px-5 pb-[max(5rem,env(safe-area-inset-bottom))] pt-3 sm:px-8 sm:pb-20"
         >
           {loading && progress ? (
             <div className="mb-10">
@@ -567,12 +573,12 @@ export default function HomePage() {
 
           {result ? (
             <>
-              <div className="mb-2 flex flex-wrap items-end justify-between gap-4 border-b border-line pb-5">
+              <div className="mb-3 flex flex-wrap items-end justify-between gap-4 border-b border-line pb-6">
                 <div>
-                  <h2 className="skillfeed-brand text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+                  <h2 className="skillfeed-brand text-[1.85rem] font-bold tracking-tight text-ink sm:text-4xl">
                     Your skillfeed
                   </h2>
-                  <p className="mt-2 text-sm text-muted">
+                  <p className="mt-2.5 text-[0.95rem] leading-relaxed text-muted sm:text-sm">
                     {result.ranked.length} articles · {result.evaluation.batches}{" "}
                     eval batches
                     {result.evaluation.usage.inputTokens != null
@@ -612,8 +618,8 @@ export default function HomePage() {
               )}
             </>
           ) : !loading ? (
-            <div className="panel empty-panel rounded-xl px-5 py-7 sm:px-7">
-              <div className="mb-4 flex items-center gap-2">
+            <div className="panel empty-panel rounded-xl px-5 py-8 sm:px-7">
+              <div className="mb-5 flex items-center gap-2.5">
                 {sources.map((source) => (
                   <SourceIcon
                     key={source}
@@ -622,7 +628,7 @@ export default function HomePage() {
                   />
                 ))}
               </div>
-              <p className="max-w-lg text-sm leading-relaxed text-muted">
+              <p className="max-w-lg text-[0.95rem] leading-relaxed text-muted sm:text-sm">
                 Write your skills once. Pick the platforms you want.{" "}
                 <span className="text-ink-soft">Skillfeed</span> pulls from
                 those sites, then{" "}
