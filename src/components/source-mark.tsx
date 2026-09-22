@@ -214,11 +214,13 @@ export function SourcePicker({
   onChange: (next: ArticleSourceId[]) => void;
   disabled?: boolean;
 }) {
+  const allSelected = selected.length === SOURCE_ORDER.length;
+
   function toggle(source: ArticleSourceId) {
     if (disabled) return;
 
     if (selected.includes(source)) {
-      if (selected.length === 1) return; // keep at least one
+      if (selected.length === 1) return;
       onChange(selected.filter((id) => id !== source));
       return;
     }
@@ -235,25 +237,42 @@ export function SourcePicker({
 
   return (
     <fieldset className="source-picker" disabled={disabled}>
-      <div className="mb-2 flex items-baseline justify-between gap-3">
-        <legend className="text-sm font-semibold text-ink">Platforms</legend>
-        <button
-          type="button"
-          className="source-picker-all"
-          onClick={selectAll}
-          disabled={disabled || selected.length === SOURCE_ORDER.length}
-        >
-          Select all
-        </button>
+      <div className="source-picker-head">
+        <div>
+          <legend className="text-sm font-semibold text-ink">
+            Platforms to use
+          </legend>
+          <p className="mt-1 text-xs leading-relaxed text-muted">
+            Tap to turn sources on or off. Only{" "}
+            <span className="text-ink-soft">in use</span> platforms are fetched
+            and scored.
+          </p>
+        </div>
+        <div className="source-picker-actions">
+          <span className="source-picker-count" aria-live="polite">
+            {selected.length}/{SOURCE_ORDER.length} in use
+          </span>
+          <button
+            type="button"
+            className="source-picker-all"
+            onClick={selectAll}
+            disabled={disabled || allSelected}
+          >
+            Use all
+          </button>
+        </div>
       </div>
+
       <div
-        className="flex flex-wrap gap-2"
+        className="source-picker-grid"
         role="group"
-        aria-label="Choose platforms to include"
+        aria-label="Choose platforms to include in ranking"
       >
         {SOURCE_ORDER.map((source) => {
           const active = selected.includes(source);
           const meta = SOURCE_META[source];
+          const alone = active && selected.length === 1;
+
           return (
             <button
               key={source}
@@ -264,13 +283,35 @@ export function SourcePicker({
               onClick={() => toggle(source)}
               disabled={disabled}
               title={
-                active && selected.length === 1
-                  ? "At least one platform is required"
-                  : meta.label
+                alone
+                  ? "Keep at least one platform on"
+                  : active
+                    ? `Turn off ${meta.label}`
+                    : `Use ${meta.label}`
               }
             >
-              <SourceIcon source={source} className="size-5" />
-              <span>{meta.label}</span>
+              <span className="source-toggle-main">
+                <SourceIcon source={source} className="size-7" />
+                <span className="source-toggle-copy">
+                  <span className="source-toggle-name">{meta.label}</span>
+                  <span className="source-toggle-state">
+                    {active ? "In use" : "Off — tap to use"}
+                  </span>
+                </span>
+              </span>
+              <span className="source-toggle-check" aria-hidden>
+                {active ? (
+                  <svg viewBox="0 0 16 16" className="size-3.5" fill="none">
+                    <path
+                      d="M3.5 8.2 6.6 11.3 12.5 4.7"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                ) : null}
+              </span>
             </button>
           );
         })}

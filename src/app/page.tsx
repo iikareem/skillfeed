@@ -484,7 +484,8 @@ export default function HomePage() {
             </p>
             <div className="anim-rise anim-rise-delay-3 mt-7">
               <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
-                Selected sources
+                Ranking with {sources.length} platform
+                {sources.length === 1 ? "" : "s"}
               </p>
               <SourceStrip sources={sources} />
             </div>
@@ -536,8 +537,7 @@ export default function HomePage() {
                 {loading ? "Ranking…" : "Rank my feed"}
               </button>
               <span className="text-sm text-muted">
-                {sources.length} platform{sources.length === 1 ? "" : "s"} ·
-                Jev batches of 7
+                Using {sources.length} of 4 · Jev batches of 7
               </span>
             </div>
 
