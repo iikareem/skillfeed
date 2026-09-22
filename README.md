@@ -1,10 +1,22 @@
 # Skillfeed
 
-**A tech reading feed ranked to your skills.**
+**A tech reading feed ranked to your skills — powered by [Jev](https://www.langchain.com/blog/building-a-harness-with-jev).**
 
-Skillfeed pulls today’s writing from Hacker News, Dev.to, Hashnode, and Lobsters, then scores each piece against a short summary of what you know and care about — using [`typesafe-ai/jev`](https://vercel.com/ai-gateway) via the Vercel AI Gateway.
+Skillfeed pulls today’s writing from Hacker News, Dev.to, Hashnode, and Lobsters, then scores each piece against a short summary of what you know and care about.
 
 You describe your skills once. Skillfeed does the rest: fetch → match → sort.
+
+---
+
+## Powered by Jev (not a chat LLM)
+
+Ranking is done with TypeSafe AI’s **[Jev](https://www.langchain.com/blog/building-a-harness-with-jev)** (`typesafe-ai/jev` on [Vercel AI Gateway](https://vercel.com/docs/ai-gateway)) — a **System One** model built for fast, structured decisions.
+
+Unlike traditional LLMs, Jev **does not use autoregressive text generation**. It does not write summaries or chat replies. You send it a **state** (your skill profile + article metadata) and typed **questions** (score / choice / boolean). It returns calibrated answers and probabilities your code can use directly.
+
+That fits ranking perfectly: we need “how well does this match?” — not another paragraph of prose. TypeSafe reports up to **~200× faster** and **~400× cheaper** than comparable LLMs on classification-style work ([LangChain on Jev](https://www.langchain.com/blog/building-a-harness-with-jev)).
+
+Skillfeed calls Jev through the Vercel AI SDK’s `experimental_evaluate` API, in batches so each request stays under the model’s context window.
 
 ---
 
@@ -16,14 +28,14 @@ Skillfeed flips that:
 
 1. **You write a skill summary** — one paragraph of what you build and care about (plus optional “avoid”).
 2. **It fetches live metadata** — titles, descriptions, tags — not full article bodies.
-3. **It scores in batches** — so each AI call stays under the model’s 32K context window.
+3. **Jev scores in batches** — structured skill-match scores, not generated text; batches stay under the 32K context window.
 4. **You get a ranked list** — strongest skill matches first, with live progress while it runs.
 
 ---
 
 ## Features
 
-- **Skill-aware ranking** — score rubric from poor → excellent against your summary
+- **Jev skill matching** — System One scoring (poor → excellent), not autoregressive generation
 - **Multi-source fetch** — HN, Dev.to, Hashnode, Lobsters in parallel
 - **Live progress (SSE)** — Fetch → Match → Sort updates in the UI as work finishes
 - **Provider adapter** — evaluation behind a factory/interface so you can swap AI backends later
@@ -38,7 +50,7 @@ Skillfeed flips that:
 |--------|--------|
 | App | [Next.js](https://nextjs.org) (App Router) |
 | UI | React 19, Tailwind CSS 4 |
-| Ranking model | `typesafe-ai/jev` via [Vercel AI SDK](https://ai-sdk.dev) + [AI Gateway](https://vercel.com/docs/ai-gateway) |
+| Ranking | **[Jev](https://www.langchain.com/blog/building-a-harness-with-jev)** (`typesafe-ai/jev`) via [Vercel AI SDK](https://ai-sdk.dev) `experimental_evaluate` + [AI Gateway](https://vercel.com/docs/ai-gateway) |
 | Validation | Zod |
 | Progress | Server-Sent Events (`text/event-stream`) |
 
@@ -91,7 +103,7 @@ Open [http://localhost:3000](http://localhost:3000), paste your skill summary, a
 
 1. **Collect** — up to `perSource` articles from each platform, deduped, capped at `maxArticles`.
 2. **Batch** — articles are chunked (default UI: **7 per call**) so evaluate requests stay under ~32K tokens.
-3. **Score** — each article gets a `score` question (0–3) against your profile in `state`.
+3. **Score with Jev** — each article gets a typed `score` question against your profile in `state` (no text generation).
 4. **Sort** — highest skill-match first; usage and batch counts returned for transparency.
 
 Progress events stream over SSE so the UI never sits on a blank spinner.
