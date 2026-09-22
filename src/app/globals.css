@@ -100,6 +100,32 @@ body {
   color: var(--signal);
 }
 
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--surface-2) 80%, transparent);
+  color: var(--ink-soft);
+  padding: 0.4rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.github-link:hover {
+  border-color: color-mix(in srgb, var(--signal) 40%, var(--line));
+  color: var(--ink);
+  background: color-mix(in srgb, var(--signal) 8%, var(--surface-2));
+}
+
 .panel {
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--surface) 92%, transparent);
@@ -240,6 +266,176 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.source-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.source-picker {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.source-picker:disabled {
+  opacity: 0.55;
+}
+
+.source-picker-all {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+}
+
+.source-picker-all:hover:not(:disabled) {
+  color: var(--signal);
+}
+
+.source-picker-all:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.source-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  color: var(--muted);
+  padding: 0.4rem 0.65rem 0.4rem 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.source-toggle svg {
+  display: block;
+  flex-shrink: 0;
+  border-radius: 0.28rem;
+  opacity: 0.55;
+  transition: opacity 0.15s ease;
+}
+
+.source-toggle[data-active="true"] {
+  border-color: color-mix(in srgb, var(--signal) 45%, var(--line));
+  background: color-mix(in srgb, var(--signal) 10%, var(--surface-2));
+  color: var(--ink);
+}
+
+.source-toggle[data-active="true"] svg {
+  opacity: 1;
+}
+
+.source-toggle:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--signal) 35%, var(--line));
+  color: var(--ink-soft);
+}
+
+.source-toggle:disabled {
+  cursor: not-allowed;
+}
+
+.source-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--surface-2) 88%, transparent);
+  padding: 0.35rem 0.55rem 0.35rem 0.35rem;
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.source-badge-sm {
+  padding: 0.28rem 0.5rem 0.28rem 0.28rem;
+  font-size: 0.65rem;
+  gap: 0.35rem;
+}
+
+.source-badge-label {
+  color: var(--ink-soft);
+}
+
+.source-badge-count {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.source-badge-warn {
+  color: var(--danger);
+}
+
+.source-badge[data-error="true"] {
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--line));
+}
+
+.source-badge svg {
+  display: block;
+  flex-shrink: 0;
+  border-radius: 0.28rem;
+}
+
+.tag-chip {
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  padding: 0.2rem 0.45rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.result-row {
+  transition: background 0.2s ease;
+  border-radius: 0.5rem;
+}
+
+.result-row:hover {
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+}
+
+.empty-panel {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--signal) 6%, transparent),
+      transparent 42%
+    ),
+    color-mix(in srgb, var(--surface) 92%, transparent);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 @media (prefers-reduced-motion: reduce) {

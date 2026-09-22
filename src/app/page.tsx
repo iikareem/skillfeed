@@ -1,12 +1,21 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
+import {
+  SourceBadge,
+  SourceIcon,
+  SourcePicker,
+  SourceStrip,
+  SOURCE_META,
+  SOURCE_ORDER,
+} from "@/components/source-mark";
 import type {
   RankProgressEvent,
   RankResult,
   RankedArticle,
   SourceSummary,
 } from "@/ranking";
+import type { ArticleSourceId } from "@/sources";
 
 const DEFAULT_SUMMARY =
   "Senior fullstack engineer — TypeScript, Next.js, AI SDK. Building evaluation-driven products and developer tools.";
@@ -15,7 +24,7 @@ const DEFAULT_AVOID = "Crypto hype, engagement bait, generic listicles";
 
 const TIPS = [
   "Metadata only — titles, briefs, and tags. No full-page scrape.",
-  "Scores use a poor → excellent rubric against your skill summary.",
+  "Jev scores with typed questions — not autoregressive chat text.",
   "Batches keep each evaluate call under the 32K context window.",
   "Anything in Avoid is pushed down, not deleted from the list.",
   "HN often has empty descriptions — title + tags still count.",
@@ -36,11 +45,36 @@ const STEPS = [
   { id: "sorting", label: "Sort" },
 ] as const;
 
+const GITHUB_REPO = "https://github.com/iikareem/skillfeed";
+
 function BrandMark({ className = "" }: { className?: string }) {
   return (
     <span className={`skillfeed-brand ${className}`}>
       Skill<span className="feed">feed</span>
     </span>
+  );
+}
+
+function GitHubIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" className={className} aria-hidden fill="currentColor">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.68 7.68 0 0 1 8 4.14c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+    </svg>
+  );
+}
+
+function ExternalArrow({ className = "size-3.5" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      className={className}
+      aria-hidden
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+    >
+      <path d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
@@ -84,6 +118,10 @@ function scoreLabel(score: number): string {
   return "poor";
 }
 
+function isSourceId(value: string): value is ArticleSourceId {
+  return value in SOURCE_META;
+}
+
 function ScoreMeter({ score, index }: { score: number; index: number }) {
   const pct = Math.min(Math.max(score / 3, 0), 1) * 100;
   return (
@@ -118,25 +156,30 @@ function ResultRow({
 }) {
   return (
     <article
-      className="anim-rise grid grid-cols-[auto_1fr] gap-x-4 gap-y-3 border-b border-line py-6 sm:grid-cols-[3.25rem_1fr_auto] sm:gap-x-6"
+      className="result-row anim-rise grid grid-cols-[auto_1fr] gap-x-4 gap-y-3 border-b border-line py-6 sm:grid-cols-[3.25rem_1fr_auto] sm:gap-x-6"
       style={{ animationDelay: `${0.04 * rank}s` }}
     >
-      <div className="font-display text-2xl font-bold tabular-nums text-muted/80">
+      <div className="font-display text-2xl font-bold tabular-nums text-muted/70">
         {String(rank).padStart(2, "0")}
       </div>
 
       <div className="min-w-0">
-        <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
-          <span>{article.source.replace("-", " ")}</span>
-          {article.author ? <span>{article.author}</span> : null}
+        <div className="mb-2.5 flex flex-wrap items-center gap-2">
+          <SourceBadge source={article.source} size="sm" />
+          {article.author ? (
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+              {article.author}
+            </span>
+          ) : null}
         </div>
         <a
           href={article.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-display text-xl font-semibold leading-snug tracking-tight text-ink transition-colors hover:text-signal sm:text-2xl"
+          className="group inline-flex max-w-full items-start gap-2 font-display text-xl font-semibold leading-snug tracking-tight text-ink transition-colors hover:text-signal sm:text-2xl"
         >
-          {article.title}
+          <span>{article.title}</span>
+          <ExternalArrow className="mt-1.5 size-3.5 shrink-0 text-muted opacity-0 transition-opacity group-hover:opacity-100" />
         </a>
         {article.description ? (
           <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
@@ -144,9 +187,13 @@ function ResultRow({
           </p>
         ) : null}
         {article.tags.length > 0 ? (
-          <p className="mt-3 text-xs text-muted">
-            {article.tags.slice(0, 6).join(" · ")}
-          </p>
+          <ul className="mt-3 flex flex-wrap gap-1.5">
+            {article.tags.slice(0, 6).map((tag) => (
+              <li key={tag} className="tag-chip">
+                {tag}
+              </li>
+            ))}
+          </ul>
         ) : null}
       </div>
 
@@ -157,7 +204,13 @@ function ResultRow({
   );
 }
 
-function RankingProgress({ progress }: { progress: LiveProgress }) {
+function RankingProgress({
+  progress,
+  selectedSources,
+}: {
+  progress: LiveProgress;
+  selectedSources: ArticleSourceId[];
+}) {
   const [tipIndex, setTipIndex] = useState(0);
   const pct = progressPercent(progress);
 
@@ -211,16 +264,31 @@ function RankingProgress({ progress }: { progress: LiveProgress }) {
       </div>
 
       {progress.sources && progress.sources.length > 0 ? (
-        <ul className="mb-4 flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-          {progress.sources.map((source) => (
-            <li key={source.source}>
-              {source.source.replace("-", " ")}{" "}
-              <span className="text-ink-soft">{source.count}</span>
-              {source.error ? " !" : ""}
+        <ul className="mb-4 flex flex-wrap gap-2">
+          {progress.sources.map((source) =>
+            isSourceId(source.source) ? (
+              <li key={source.source}>
+                <SourceBadge
+                  source={source.source}
+                  count={source.count}
+                  error={source.error}
+                />
+              </li>
+            ) : null,
+          )}
+        </ul>
+      ) : (
+        <ul className="mb-4 flex flex-wrap gap-3 opacity-70">
+          {selectedSources.map((source) => (
+            <li key={source} className="flex items-center gap-2">
+              <SourceIcon source={source} className="size-5 animate-pulse" />
+              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                {SOURCE_META[source].label}
+              </span>
             </li>
           ))}
         </ul>
-      ) : null}
+      )}
 
       <p
         key={tipIndex}
@@ -288,17 +356,25 @@ async function rankWithProgress(
 export default function HomePage() {
   const [summary, setSummary] = useState(DEFAULT_SUMMARY);
   const [avoid, setAvoid] = useState(DEFAULT_AVOID);
+  const [sources, setSources] = useState<ArticleSourceId[]>([...SOURCE_ORDER]);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState<LiveProgress | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<RankResult | null>(null);
 
-  const canSubmit = useMemo(() => summary.trim().length >= 8, [summary]);
+  const canSubmit = useMemo(
+    () => summary.trim().length >= 8 && sources.length > 0,
+    [summary, sources],
+  );
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!canSubmit) {
-      setError("Add a short summary of your skills.");
+      setError(
+        sources.length === 0
+          ? "Pick at least one platform."
+          : "Add a short summary of your skills.",
+      );
       return;
     }
 
@@ -321,6 +397,7 @@ export default function HomePage() {
             summary: summary.trim(),
             avoid: avoid.trim() || undefined,
           },
+          sources,
           perSource: 12,
           maxArticles: 28,
           batchSize: 7,
@@ -355,11 +432,23 @@ export default function HomePage() {
 
   return (
     <div className="skillfeed-shell">
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 pt-6 sm:px-8">
+      <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 pt-6 sm:px-8">
         <BrandMark className="text-lg font-bold text-ink" />
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
-          ranked to your skills
-        </p>
+        <div className="flex items-center gap-4">
+          <p className="hidden text-xs font-semibold uppercase tracking-[0.16em] text-muted sm:block">
+            ranked with Jev
+          </p>
+          <a
+            href={GITHUB_REPO}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="github-link"
+            aria-label="Skillfeed on GitHub"
+          >
+            <GitHubIcon className="size-4" />
+            <span>GitHub</span>
+          </a>
+        </div>
       </header>
 
       <main>
@@ -375,6 +464,12 @@ export default function HomePage() {
               A feed ranked to your skills. Tell Skillfeed what you know—and
               what to skip—then get today&apos;s best matches first.
             </p>
+            <div className="anim-rise anim-rise-delay-3 mt-7">
+              <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
+                Selected sources
+              </p>
+              <SourceStrip sources={sources} />
+            </div>
           </div>
 
           <form
@@ -408,7 +503,13 @@ export default function HomePage() {
               />
             </label>
 
-            <div className="anim-rise anim-rise-delay-3 flex flex-wrap items-center gap-4 pt-1">
+            <SourcePicker
+              selected={sources}
+              onChange={setSources}
+              disabled={loading}
+            />
+
+            <div className="flex flex-wrap items-center gap-4 pt-1">
               <button
                 type="submit"
                 disabled={loading || !canSubmit}
@@ -417,7 +518,8 @@ export default function HomePage() {
                 {loading ? "Ranking…" : "Rank my feed"}
               </button>
               <span className="text-sm text-muted">
-                HN · Dev.to · Hashnode · Lobsters
+                {sources.length} platform{sources.length === 1 ? "" : "s"} ·
+                Jev batches of 7
               </span>
             </div>
 
@@ -438,7 +540,10 @@ export default function HomePage() {
         >
           {loading && progress ? (
             <div className="mb-10">
-              <RankingProgress progress={progress} />
+              <RankingProgress
+                progress={progress}
+                selectedSources={sources}
+              />
             </div>
           ) : null}
 
@@ -457,13 +562,18 @@ export default function HomePage() {
                       : ""}
                   </p>
                 </div>
-                <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold uppercase tracking-[0.12em] text-muted">
-                  {result.sources.map((f) => (
-                    <li key={f.source}>
-                      {f.source.replace("-", " ")} {f.count}
-                      {f.error ? " !" : ""}
-                    </li>
-                  ))}
+                <ul className="flex flex-wrap gap-2">
+                  {result.sources.map((f) =>
+                    isSourceId(f.source) ? (
+                      <li key={f.source}>
+                        <SourceBadge
+                          source={f.source}
+                          count={f.count}
+                          error={f.error}
+                        />
+                      </li>
+                    ) : null,
+                  )}
                 </ul>
               </div>
 
@@ -484,12 +594,23 @@ export default function HomePage() {
               )}
             </>
           ) : !loading ? (
-            <div className="panel rounded-xl px-5 py-6">
+            <div className="panel empty-panel rounded-xl px-5 py-7 sm:px-7">
+              <div className="mb-4 flex items-center gap-2">
+                {sources.map((source) => (
+                  <SourceIcon
+                    key={source}
+                    source={source}
+                    className="size-6 opacity-90"
+                  />
+                ))}
+              </div>
               <p className="max-w-lg text-sm leading-relaxed text-muted">
-                Write your skills once.{" "}
-                <span className="text-ink-soft">Skillfeed</span> scores
-                today&apos;s writing against that summary—and pushes down
-                anything you want to avoid.
+                Write your skills once. Pick the platforms you want.{" "}
+                <span className="text-ink-soft">Skillfeed</span> pulls from
+                those sites, then{" "}
+                <span className="text-ink-soft">Jev</span> scores today&apos;s
+                writing against that summary—and pushes down anything you want
+                to avoid.
               </p>
             </div>
           ) : null}
