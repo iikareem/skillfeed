@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Live demo
+    url: https://skillfeed-xi.vercel.app
+    about: Try Skillfeed before filing an issue.
+  - name: Jev / System One background
+    url: https://www.langchain.com/blog/building-a-harness-with-jev
+    about: Learn how Jev differs from autoregressive LLMs.

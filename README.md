@@ -1,46 +1,52 @@
 # Skillfeed
 
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![Vercel AI SDK](https://img.shields.io/badge/AI%20SDK-evaluate-000?logo=vercel&logoColor=white)](https://ai-sdk.dev)
+[![Model](https://img.shields.io/badge/model-typesafe--ai%2Fjev-f0a45a)](https://www.langchain.com/blog/building-a-harness-with-jev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+[![Deployed on Vercel](https://img.shields.io/badge/demo-live-3dba7c?logo=vercel&logoColor=white)](https://skillfeed-xi.vercel.app)
+
 **A tech reading feed ranked to your skills — powered by [Jev](https://www.langchain.com/blog/building-a-harness-with-jev).**
 
-Skillfeed pulls today’s writing from Hacker News, Dev.to, Hashnode, and Lobsters, then scores each piece against a short summary of what you know and care about.
+Skillfeed pulls today’s writing from Hacker News, Dev.to, Hashnode, and Lobsters, then scores each piece against a short summary of what you know and care about. You pick the platforms, describe your skills once, and get the best matches first.
 
-You describe your skills once. Skillfeed does the rest: fetch → match → sort.
+**[Live demo →](https://skillfeed-xi.vercel.app)** · **[GitHub](https://github.com/iikareem/skillfeed)**
+
+---
+
+## Highlights
+
+| | |
+|---|---|
+| **Jev, not a chat LLM** | System One scoring — typed questions + probabilities, **no autoregressive generation** |
+| **Multi-source** | HN · Dev.to · Hashnode · Lobsters (multi-select in the UI) |
+| **Live progress** | SSE stream: Fetch → Match → Sort |
+| **Swappable AI** | Adapter + factory (`EvaluationProvider`) so backends can change without touching ranking |
+| **Deploy-ready** | One Next.js app — UI and API routes ship together on Vercel |
 
 ---
 
 ## Powered by Jev (not a chat LLM)
 
-Ranking is done with TypeSafe AI’s **[Jev](https://www.langchain.com/blog/building-a-harness-with-jev)** (`typesafe-ai/jev` on [Vercel AI Gateway](https://vercel.com/docs/ai-gateway)) — a **System One** model built for fast, structured decisions.
+Ranking uses TypeSafe AI’s **[Jev](https://www.langchain.com/blog/building-a-harness-with-jev)** (`typesafe-ai/jev` on [Vercel AI Gateway](https://vercel.com/docs/ai-gateway)) — a **System One** model for fast, structured decisions.
 
-Unlike traditional LLMs, Jev **does not use autoregressive text generation**. It does not write summaries or chat replies. You send it a **state** (your skill profile + article metadata) and typed **questions** (score / choice / boolean). It returns calibrated answers and probabilities your code can use directly.
+Unlike traditional LLMs, Jev **does not use autoregressive text generation**. It does not write summaries or chat replies. You send a **state** (skill profile + article metadata) and typed **questions** (score / choice / boolean). It returns calibrated answers and probabilities your code can use directly.
 
-That fits ranking perfectly: we need “how well does this match?” — not another paragraph of prose. TypeSafe reports up to **~200× faster** and **~400× cheaper** than comparable LLMs on classification-style work ([LangChain on Jev](https://www.langchain.com/blog/building-a-harness-with-jev)).
+That fits ranking: we need “how well does this match?” — not another paragraph of prose. TypeSafe reports up to **~200× faster** and **~400× cheaper** than comparable LLMs on classification-style work ([LangChain on Jev](https://www.langchain.com/blog/building-a-harness-with-jev)).
 
 Skillfeed calls Jev through the Vercel AI SDK’s `experimental_evaluate` API, in batches so each request stays under the model’s context window.
 
 ---
 
-## Why Skillfeed
-
-Tech feeds are noisy. The same link hits every front page, and “top” rarely means “relevant to you.”
-
-Skillfeed flips that:
-
-1. **You write a skill summary** — one paragraph of what you build and care about (plus optional “avoid”).
-2. **It fetches live metadata** — titles, descriptions, tags — not full article bodies.
-3. **Jev scores in batches** — structured skill-match scores, not generated text; batches stay under the 32K context window.
-4. **You get a ranked list** — strongest skill matches first, with live progress while it runs.
-
----
-
 ## Features
 
-- **Jev skill matching** — System One scoring (poor → excellent), not autoregressive generation
-- **Multi-source fetch** — HN, Dev.to, Hashnode, Lobsters in parallel
-- **Live progress (SSE)** — Fetch → Match → Sort updates in the UI as work finishes
-- **Provider adapter** — evaluation behind a factory/interface so you can swap AI backends later
-- **Metadata-only pipeline** — cheap, fast classification without scraping full posts
-- **Dark-first UI** — built for a focused “what should I read next?” loop
+- **Jev skill matching** — poor → excellent score rubric against your summary
+- **Platform multi-select** — include only the sources you care about
+- **Parallel metadata fetch** — titles, descriptions, tags (no full-page scrape)
+- **Batched evaluate** — keeps each call under ~32K tokens (UI default: 7 articles)
+- **SSE progress UI** — smart loading with live source counts
+- **Provider adapter** — swap evaluation backends via factory
+- **Dark-first UI** — source icons, ranked list, GitHub link in header
 
 ---
 
@@ -48,15 +54,21 @@ Skillfeed flips that:
 
 | Layer | Choice |
 |--------|--------|
-| App | [Next.js](https://nextjs.org) (App Router) |
+| App | [Next.js](https://nextjs.org) 16 (App Router) |
 | UI | React 19, Tailwind CSS 4 |
-| Ranking | **[Jev](https://www.langchain.com/blog/building-a-harness-with-jev)** (`typesafe-ai/jev`) via [Vercel AI SDK](https://ai-sdk.dev) `experimental_evaluate` + [AI Gateway](https://vercel.com/docs/ai-gateway) |
+| Ranking | **[Jev](https://www.langchain.com/blog/building-a-harness-with-jev)** via [AI SDK](https://ai-sdk.dev) `experimental_evaluate` + [AI Gateway](https://vercel.com/docs/ai-gateway) |
 | Validation | Zod |
 | Progress | Server-Sent Events (`text/event-stream`) |
+| Hosting | [Vercel](https://vercel.com) (frontend + API together) |
 
 ---
 
 ## Quick start
+
+### Prerequisites
+
+- Node.js 20+
+- A [Vercel AI Gateway](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%2Fapi-keys) API key
 
 ### 1. Clone & install
 
@@ -66,9 +78,7 @@ cd skillfeed
 npm install
 ```
 
-### 2. Configure environment
-
-Copy the example env and add a [Vercel AI Gateway](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%2Fapi-keys) API key:
+### 2. Environment
 
 ```bash
 cp .env.example .env.local
@@ -76,10 +86,13 @@ cp .env.example .env.local
 
 ```env
 AI_GATEWAY_API_KEY=your_ai_gateway_api_key_here
+# Optional — defaults to vercel-gateway
 EVALUATION_PROVIDER=vercel-gateway
 ```
 
-> AI Gateway may require a payment method on file to unlock free credits. Requests only bill when they succeed.
+> `EVALUATION_PROVIDER` is an **app** setting (which adapter to use), not a Vercel dashboard field. Today the only value is `vercel-gateway`.
+
+AI Gateway may require a payment method to unlock free credits. Successful requests only.
 
 ### 3. Run
 
@@ -87,26 +100,46 @@ EVALUATION_PROVIDER=vercel-gateway
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000), paste your skill summary, and rank.
+Open [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Deploy on Vercel
+
+The UI and backend (`/api/rank`, `/api/sources`) are the same Next.js project — one deploy covers both.
+
+1. Import [iikareem/skillfeed](https://github.com/iikareem/skillfeed) in [Vercel](https://vercel.com/new).
+2. Set `AI_GATEWAY_API_KEY` in Project → Settings → Environment Variables.
+3. Deploy.
+
+Or from the CLI:
+
+```bash
+npx vercel
+npx vercel env add AI_GATEWAY_API_KEY
+npx vercel --prod
+```
+
+Live: [skillfeed-xi.vercel.app](https://skillfeed-xi.vercel.app)
 
 ---
 
 ## How ranking works
 
 ```
-┌─────────────┐     ┌──────────────┐     ┌─────────────────┐     ┌────────┐
-│ User profile│ ──▶ │ Fetch sources│ ──▶ │ Score in batches│ ──▶ │  Sort  │
-│ summary+avoid│     │ (parallel)   │     │ experimental_   │     │ by score│
-└─────────────┘     └──────────────┘     │ evaluate (jev)  │     └────────┘
-                                         └─────────────────┘
+┌──────────────┐     ┌──────────────┐     ┌─────────────────┐     ┌────────┐
+│ User profile │ ──▶ │ Fetch sources│ ──▶ │ Score in batches│ ──▶ │  Sort  │
+│ + platforms  │     │ (parallel)   │     │ experimental_   │     │ by score│
+└──────────────┘     └──────────────┘     │ evaluate (Jev)  │     └────────┘
+                                          └─────────────────┘
 ```
 
-1. **Collect** — up to `perSource` articles from each platform, deduped, capped at `maxArticles`.
-2. **Batch** — articles are chunked (default UI: **7 per call**) so evaluate requests stay under ~32K tokens.
-3. **Score with Jev** — each article gets a typed `score` question against your profile in `state` (no text generation).
-4. **Sort** — highest skill-match first; usage and batch counts returned for transparency.
+1. **Collect** — up to `perSource` from each selected platform, deduped, capped at `maxArticles`.
+2. **Batch** — chunk articles (default UI: **7 per call**) for the 32K context window.
+3. **Score with Jev** — typed `score` questions against `state.profile` (no text generation).
+4. **Sort** — highest skill-match first.
 
-Progress events stream over SSE so the UI never sits on a blank spinner.
+Progress streams over SSE so the UI never sits on a blank spinner.
 
 ---
 
@@ -114,7 +147,7 @@ Progress events stream over SSE so the UI never sits on a blank spinner.
 
 ### `POST /api/rank`
 
-Streams Server-Sent Events. The last event is always `complete` (with ranked articles) or `error`.
+Streams Server-Sent Events. Last event is always `complete` or `error`.
 
 **Request body**
 
@@ -124,6 +157,7 @@ Streams Server-Sent Events. The last event is always `complete` (with ranked art
     "summary": "Senior fullstack — TypeScript, Next.js, AI SDK, Postgres.",
     "avoid": "Crypto hype, engagement bait, no-code tutorials"
   },
+  "sources": ["hacker-news", "devto"],
   "perSource": 12,
   "maxArticles": 28,
   "batchSize": 7
@@ -134,44 +168,34 @@ Streams Server-Sent Events. The last event is always `complete` (with ranked art
 |--------|----------|-------------|
 | `profile.summary` | yes | Skills / interests (min 8 chars) |
 | `profile.avoid` | no | Topics to penalize |
+| `sources` | no | `hacker-news`, `devto`, `hashnode`, `lobsters` (default: all) |
 | `perSource` | no | Articles per platform (default 15) |
 | `maxArticles` | no | Cap after dedupe (default 40) |
 | `batchSize` | no | Articles per evaluate call (default 8) |
-| `sources` | no | Subset: `hacker-news`, `devto`, `hashnode`, `lobsters` |
 
 **Example**
 
 ```bash
-curl -N http://localhost:3000/api/rank \
+curl -N https://skillfeed-xi.vercel.app/api/rank \
   -H 'Content-Type: application/json' \
   -d '{
     "profile": {
       "summary": "Senior fullstack — TypeScript, Next.js, AI SDK.",
-      "avoid": "Crypto hype, engagement bait"
+      "avoid": "Crypto hype"
     },
-    "perSource": 12,
-    "maxArticles": 28,
+    "sources": ["hacker-news", "devto"],
     "batchSize": 7
   }'
 ```
 
-**SSE stages**
-
-| Stage | Meaning |
-|--------|---------|
-| `fetching` | Pulling feeds |
-| `fetched` | Collection done (+ counts) |
-| `scoring` | Batch `completed` / `total` |
-| `sorting` | Local sort by score |
-| `complete` | Final `result` payload |
-| `error` | Failure message |
+**SSE stages:** `fetching` → `fetched` → `scoring` → `sorting` → `complete` | `error`
 
 ### `GET /api/sources`
 
-Debug helper — fetch metadata without ranking.
+Debug metadata fetch (no ranking).
 
 ```bash
-curl 'http://localhost:3000/api/sources?limit=10&source=devto'
+curl 'https://skillfeed-xi.vercel.app/api/sources?limit=10&source=devto'
 ```
 
 ---
@@ -181,41 +205,20 @@ curl 'http://localhost:3000/api/sources?limit=10&source=devto'
 ```
 src/
 ├── app/
-│   ├── api/
-│   │   ├── rank/route.ts      # Thin SSE endpoint
-│   │   └── sources/route.ts   # Metadata debug endpoint
-│   ├── page.tsx               # Skillfeed UI
-│   ├── layout.tsx
-│   └── globals.css
+│   ├── api/rank/              # SSE ranking endpoint
+│   ├── api/sources/           # Metadata debug endpoint
+│   └── page.tsx               # Skillfeed UI
+├── components/
+│   └── source-mark.tsx        # Source icons + platform picker
 ├── sources/                   # One fetcher per platform
-│   ├── hacker-news.ts
-│   ├── devto.ts
-│   ├── hashnode.ts
-│   ├── lobsters.ts
-│   └── index.ts               # Parallel fetchSources()
-├── evaluation/                # Provider-agnostic evaluation
-│   ├── types.ts               # EvaluationProvider interface
-│   ├── create-provider.ts     # Factory
-│   └── providers/
-│       └── vercel-gateway.ts  # Vercel AI Gateway adapter
-├── ranking/                   # Domain pipeline
-│   ├── collect-articles.ts
-│   ├── score-articles.ts      # Batch + toEvaluateRequest
-│   ├── rank-articles.ts       # Orchestrator
-│   ├── progress.ts            # Progress event types
-│   ├── schema.ts              # Zod request schema
-│   └── types.ts
-└── lib/
-    ├── env.ts                 # Safe AI_GATEWAY_API_KEY loading
-    ├── http.ts
-    └── chunk.ts
+├── evaluation/                # Provider interface + Vercel adapter
+├── ranking/                   # Collect → score → sort
+└── lib/                       # env, http, chunk helpers
 ```
 
-**Design notes**
-
-- **Sources** never know about AI — they only return metadata.
-- **Evaluation** is swappable: implement `EvaluationProvider`, register it in the factory.
-- **Ranking** owns the pipeline and reports progress; the HTTP route only encodes SSE.
+- **Sources** never know about AI — metadata only.
+- **Evaluation** is swappable via `EvaluationProvider` + factory.
+- **Ranking** owns the pipeline; the HTTP route only encodes SSE.
 
 ---
 
@@ -235,12 +238,18 @@ npm run lint     # ESLint
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `AI_GATEWAY_API_KEY` | yes | Vercel AI Gateway API key |
-| `EVALUATION_PROVIDER` | no | Default: `vercel-gateway` |
+| `EVALUATION_PROVIDER` | no | Adapter id — default `vercel-gateway` |
 
-Never commit `.env.local`. Use `.env.example` as the template.
+Never commit `.env.local`. Use [`.env.example`](./.env.example).
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for local setup and PR expectations.
 
 ---
 
 ## License
 
-Private / personal project unless otherwise noted. Add a license if you open-source it.
+[MIT](./LICENSE) © 2026 [iikareem](https://github.com/iikareem)

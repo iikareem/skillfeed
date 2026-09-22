@@ -1,0 +1,35 @@
+{
+  "name": "feature_request",
+  "description": "Suggest an idea for Skillfeed",
+  "title": "[Feature]: ",
+  "labels": ["enhancement"],
+  "body": [
+    {
+      "type": "textarea",
+      "id": "problem",
+      "attributes": {
+        "label": "Problem / motivation",
+        "description": "What problem does this solve?",
+        "placeholder": "I'm always frustrated when…"
+      },
+      "validations": { "required": true }
+    },
+    {
+      "type": "textarea",
+      "id": "solution",
+      "attributes": {
+        "label": "Proposed solution",
+        "description": "What would you like to see?"
+      },
+      "validations": { "required": true }
+    },
+    {
+      "type": "textarea",
+      "id": "context",
+      "attributes": {
+        "label": "Additional context",
+        "description": "Screenshots, links, or alternatives considered"
+      }
+    }
+  ]
+}
