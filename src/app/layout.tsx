@@ -14,14 +14,40 @@ const figtree = Figtree({
   weight: ["400", "500", "600", "700"],
 });
 
+const siteUrl = "https://skillfeed-xi.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Skillfeed — a feed ranked to your skills",
   description:
-    "Pull today's tech writing, score it against your skills, and read what matters first.",
+    "Pull today's tech writing, score it against your skills with Jev, and read what matters first.",
+  applicationName: "Skillfeed",
+  icons: {
+    icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
+  },
   openGraph: {
     title: "Skillfeed — a feed ranked to your skills",
     description:
       "HN, Dev.to, Hashnode, Lobsters — ranked to your skills with typesafe-ai/jev.",
+    url: siteUrl,
+    siteName: "Skillfeed",
+    images: [
+      {
+        url: "/og.png",
+        width: 1024,
+        height: 1024,
+        alt: "Skillfeed — ranked tech reading",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Skillfeed — a feed ranked to your skills",
+    description:
+      "A tech reading feed ranked to your skills — powered by Jev.",
+    images: ["/og.png"],
   },
 };
 

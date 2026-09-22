@@ -100,6 +100,20 @@ body {
   color: var(--signal);
 }
 
+.skillfeed-logo {
+  display: block;
+  flex-shrink: 0;
+  border-radius: 0.55rem;
+}
+
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: inherit;
+}
+
 .github-link {
   display: inline-flex;
   align-items: center;

@@ -5,4 +5,4 @@ contact_links:
     about: Try Skillfeed before filing an issue.
   - name: Jev / System One background
     url: https://www.langchain.com/blog/building-a-harness-with-jev
-    about: Learn how Jev differs from autoregressive LLMs.
+    about: How Skillfeed uses the Jev evaluation model.

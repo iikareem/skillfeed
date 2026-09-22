@@ -24,7 +24,7 @@ const DEFAULT_AVOID = "Crypto hype, engagement bait, generic listicles";
 
 const TIPS = [
   "Metadata only — titles, briefs, and tags. No full-page scrape.",
-  "Jev scores with typed questions — not autoregressive chat text.",
+  "Jev scores each article with typed questions against your skill summary.",
   "Batches keep each evaluate call under the 32K context window.",
   "Anything in Avoid is pushed down, not deleted from the list.",
   "HN often has empty descriptions — title + tags still count.",
@@ -52,6 +52,20 @@ function BrandMark({ className = "" }: { className?: string }) {
     <span className={`skillfeed-brand ${className}`}>
       Skill<span className="feed">feed</span>
     </span>
+  );
+}
+
+function LogoMark({ className = "size-8" }: { className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/logo.svg"
+      alt=""
+      width={32}
+      height={32}
+      className={`skillfeed-logo ${className}`}
+      aria-hidden
+    />
   );
 }
 
@@ -433,7 +447,10 @@ export default function HomePage() {
   return (
     <div className="skillfeed-shell">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 pt-6 sm:px-8">
-        <BrandMark className="text-lg font-bold text-ink" />
+        <a href="/" className="brand-lockup" aria-label="Skillfeed home">
+          <LogoMark className="size-8" />
+          <BrandMark className="text-lg font-bold text-ink" />
+        </a>
         <div className="flex items-center gap-4">
           <p className="hidden text-xs font-semibold uppercase tracking-[0.16em] text-muted sm:block">
             ranked with Jev
@@ -457,7 +474,8 @@ export default function HomePage() {
             <p className="anim-rise mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-signal">
               Daily reading, skill-matched
             </p>
-            <h1 className="anim-rise anim-rise-delay-1 text-[clamp(3.2rem,8.5vw,5.8rem)] font-extrabold text-ink">
+            <h1 className="anim-rise anim-rise-delay-1 flex flex-wrap items-center gap-4 text-[clamp(3.2rem,8.5vw,5.8rem)] font-extrabold text-ink">
+              <LogoMark className="size-[clamp(2.75rem,7vw,4.5rem)]" />
               <BrandMark />
             </h1>
             <p className="anim-rise anim-rise-delay-2 mt-5 max-w-md text-lg leading-relaxed text-ink-soft sm:text-xl">
