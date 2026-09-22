@@ -170,18 +170,18 @@ function ResultRow({
 }) {
   return (
     <article
-      className="result-row anim-rise grid grid-cols-[auto_1fr] gap-x-4 gap-y-3 border-b border-line py-6 sm:grid-cols-[3.25rem_1fr_auto] sm:gap-x-6"
+      className="result-row anim-rise grid grid-cols-[2.25rem_1fr] gap-x-3 gap-y-2.5 border-b border-line py-4 sm:grid-cols-[3.25rem_1fr_auto] sm:gap-x-6 sm:gap-y-3 sm:py-6"
       style={{ animationDelay: `${0.04 * rank}s` }}
     >
-      <div className="font-display text-2xl font-bold tabular-nums text-muted/70">
+      <div className="font-display text-xl font-bold tabular-nums text-muted/70 sm:text-2xl">
         {String(rank).padStart(2, "0")}
       </div>
 
       <div className="min-w-0">
-        <div className="mb-2.5 flex flex-wrap items-center gap-2">
+        <div className="mb-2 flex flex-wrap items-center gap-2 sm:mb-2.5">
           <SourceBadge source={article.source} size="sm" />
           {article.author ? (
-            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
+            <span className="max-w-full truncate text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
               {article.author}
             </span>
           ) : null}
@@ -190,18 +190,18 @@ function ResultRow({
           href={article.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group inline-flex max-w-full items-start gap-2 font-display text-xl font-semibold leading-snug tracking-tight text-ink transition-colors hover:text-signal sm:text-2xl"
+          className="group inline-flex max-w-full items-start gap-2 font-display text-lg font-semibold leading-snug tracking-tight text-ink transition-colors hover:text-signal sm:text-2xl"
         >
           <span>{article.title}</span>
-          <ExternalArrow className="mt-1.5 size-3.5 shrink-0 text-muted opacity-0 transition-opacity group-hover:opacity-100" />
+          <ExternalArrow className="mt-1 size-3.5 shrink-0 text-muted opacity-0 transition-opacity group-hover:opacity-100 sm:mt-1.5" />
         </a>
         {article.description ? (
-          <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft sm:text-[15px]">
             {article.description}
           </p>
         ) : null}
         {article.tags.length > 0 ? (
-          <ul className="mt-3 flex flex-wrap gap-1.5">
+          <ul className="mt-2.5 flex flex-wrap gap-1.5 sm:mt-3">
             {article.tags.slice(0, 6).map((tag) => (
               <li key={tag} className="tag-chip">
                 {tag}
@@ -211,7 +211,7 @@ function ResultRow({
         ) : null}
       </div>
 
-      <div className="col-span-2 sm:col-span-1 sm:self-start sm:justify-self-end">
+      <div className="col-span-2 pl-9 sm:col-span-1 sm:self-start sm:justify-self-end sm:pl-0">
         <ScoreMeter score={article.verdict.score} index={rank} />
       </div>
     </article>
@@ -446,13 +446,13 @@ export default function HomePage() {
 
   return (
     <div className="skillfeed-shell">
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 pt-6 sm:px-8">
+      <header className="site-header mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:gap-4 sm:px-8 sm:pt-6">
         <a href="/" className="brand-lockup" aria-label="Skillfeed home">
-          <LogoMark className="size-8" />
-          <BrandMark className="text-lg font-bold text-ink" />
+          <LogoMark className="size-7 sm:size-8" />
+          <BrandMark className="text-base font-bold text-ink sm:text-lg" />
         </a>
-        <div className="flex items-center gap-4">
-          <p className="hidden text-xs font-semibold uppercase tracking-[0.16em] text-muted sm:block">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <p className="hidden text-xs font-semibold uppercase tracking-[0.16em] text-muted md:block">
             ranked with Jev
           </p>
           <a
@@ -463,26 +463,26 @@ export default function HomePage() {
             aria-label="Skillfeed on GitHub"
           >
             <GitHubIcon className="size-4" />
-            <span>GitHub</span>
+            <span className="hidden sm:inline">GitHub</span>
           </a>
         </div>
       </header>
 
       <main>
-        <section className="hero-grid mx-auto grid w-full max-w-6xl gap-8 px-5 pb-8 pt-6 sm:gap-10 sm:px-8 sm:pt-8 lg:grid-cols-[1fr_0.95fr] lg:items-start lg:gap-12 lg:pt-10">
+        <section className="hero-grid mx-auto grid w-full max-w-6xl gap-6 px-4 pb-6 pt-4 sm:gap-10 sm:px-8 sm:pb-8 sm:pt-8 lg:grid-cols-[1fr_0.95fr] lg:items-start lg:gap-12 lg:pt-10">
           <div className="hero-copy lg:sticky lg:top-8 lg:pt-1">
-            <p className="anim-rise mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-signal">
+            <p className="anim-rise mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-signal sm:mb-3 sm:text-xs">
               Daily reading, skill-matched
             </p>
-            <h1 className="anim-rise anim-rise-delay-1 flex items-center gap-3.5 text-[clamp(2.6rem,6.5vw,4.25rem)] font-extrabold leading-none text-ink">
-              <LogoMark className="size-[clamp(2.4rem,5.5vw,3.5rem)]" />
+            <h1 className="anim-rise anim-rise-delay-1 flex items-center gap-2.5 text-[clamp(2.15rem,9vw,4.25rem)] font-extrabold leading-none text-ink sm:gap-3.5">
+              <LogoMark className="size-[clamp(2rem,8vw,3.5rem)]" />
               <BrandMark />
             </h1>
-            <p className="anim-rise anim-rise-delay-2 mt-4 max-w-md text-base leading-relaxed text-ink-soft sm:text-lg">
+            <p className="anim-rise anim-rise-delay-2 mt-3 max-w-md text-[0.95rem] leading-relaxed text-ink-soft sm:mt-4 sm:text-lg">
               A feed ranked to your skills. Tell Skillfeed what you know—and
               what to skip—then get today&apos;s best matches first.
             </p>
-            <div className="anim-rise anim-rise-delay-3 mt-6">
+            <div className="anim-rise anim-rise-delay-3 mt-4 hidden sm:mt-6 sm:block">
               <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
                 Ranking with {sources.length} platform
                 {sources.length === 1 ? "" : "s"}
@@ -493,7 +493,7 @@ export default function HomePage() {
 
           <form
             onSubmit={onSubmit}
-            className="anim-rise anim-rise-delay-1 panel flex flex-col gap-4 rounded-xl p-4 sm:gap-5 sm:p-6"
+            className="anim-rise anim-rise-delay-1 panel flex flex-col gap-3.5 rounded-xl p-3.5 sm:gap-5 sm:p-6"
           >
             <label className="flex flex-col gap-2">
               <span className="text-sm font-semibold text-ink">Your skills</span>
@@ -528,15 +528,15 @@ export default function HomePage() {
               disabled={loading}
             />
 
-            <div className="flex flex-wrap items-center gap-4 pt-0.5">
+            <div className="form-actions flex flex-col gap-2.5 pt-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               <button
                 type="submit"
                 disabled={loading || !canSubmit}
-                className="btn-primary"
+                className="btn-primary w-full sm:w-auto"
               >
                 {loading ? "Ranking…" : "Rank my feed"}
               </button>
-              <span className="text-sm text-muted">
+              <span className="text-center text-xs text-muted sm:text-left sm:text-sm">
                 Using {sources.length} of 4 · Jev batches of 7
               </span>
             </div>
@@ -554,7 +554,7 @@ export default function HomePage() {
 
         <section
           id="results"
-          className="mx-auto w-full max-w-6xl px-5 pb-20 pt-2 sm:px-8"
+          className="mx-auto w-full max-w-6xl px-4 pb-[max(5rem,env(safe-area-inset-bottom))] pt-2 sm:px-8 sm:pb-20"
         >
           {loading && progress ? (
             <div className="mb-10">

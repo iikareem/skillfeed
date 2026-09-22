@@ -295,7 +295,7 @@ export function SourcePicker({
                 <span className="source-toggle-copy">
                   <span className="source-toggle-name">{meta.label}</span>
                   <span className="source-toggle-state">
-                    {active ? "In use" : "Off — tap to use"}
+                    {active ? "In use" : "Off"}
                   </span>
                 </span>
               </span>
