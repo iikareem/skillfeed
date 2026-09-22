@@ -114,6 +114,16 @@ body {
   color: inherit;
 }
 
+.hero-copy {
+  align-self: start;
+}
+
+@media (min-width: 1024px) {
+  .hero-grid {
+    min-height: unset;
+  }
+}
+
 .github-link {
   display: inline-flex;
   align-items: center;

@@ -469,21 +469,21 @@ export default function HomePage() {
       </header>
 
       <main>
-        <section className="mx-auto grid w-full max-w-6xl gap-10 px-5 pb-10 pt-10 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-14 lg:pt-16">
-          <div>
-            <p className="anim-rise mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-signal">
+        <section className="hero-grid mx-auto grid w-full max-w-6xl gap-8 px-5 pb-8 pt-6 sm:gap-10 sm:px-8 sm:pt-8 lg:grid-cols-[1fr_0.95fr] lg:items-start lg:gap-12 lg:pt-10">
+          <div className="hero-copy lg:sticky lg:top-8 lg:pt-1">
+            <p className="anim-rise mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-signal">
               Daily reading, skill-matched
             </p>
-            <h1 className="anim-rise anim-rise-delay-1 flex flex-wrap items-center gap-4 text-[clamp(3.2rem,8.5vw,5.8rem)] font-extrabold text-ink">
-              <LogoMark className="size-[clamp(2.75rem,7vw,4.5rem)]" />
+            <h1 className="anim-rise anim-rise-delay-1 flex items-center gap-3.5 text-[clamp(2.6rem,6.5vw,4.25rem)] font-extrabold leading-none text-ink">
+              <LogoMark className="size-[clamp(2.4rem,5.5vw,3.5rem)]" />
               <BrandMark />
             </h1>
-            <p className="anim-rise anim-rise-delay-2 mt-5 max-w-md text-lg leading-relaxed text-ink-soft sm:text-xl">
+            <p className="anim-rise anim-rise-delay-2 mt-4 max-w-md text-base leading-relaxed text-ink-soft sm:text-lg">
               A feed ranked to your skills. Tell Skillfeed what you know—and
               what to skip—then get today&apos;s best matches first.
             </p>
-            <div className="anim-rise anim-rise-delay-3 mt-7">
-              <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
+            <div className="anim-rise anim-rise-delay-3 mt-6">
+              <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
                 Ranking with {sources.length} platform
                 {sources.length === 1 ? "" : "s"}
               </p>
@@ -493,14 +493,14 @@ export default function HomePage() {
 
           <form
             onSubmit={onSubmit}
-            className="anim-rise anim-rise-delay-2 panel flex flex-col gap-5 rounded-xl p-5 sm:p-6"
+            className="anim-rise anim-rise-delay-1 panel flex flex-col gap-4 rounded-xl p-4 sm:gap-5 sm:p-6"
           >
             <label className="flex flex-col gap-2">
               <span className="text-sm font-semibold text-ink">Your skills</span>
               <textarea
                 value={summary}
                 onChange={(e) => setSummary(e.currentTarget.value)}
-                rows={4}
+                rows={3}
                 disabled={loading}
                 className="field"
                 placeholder="Who you are and what you’re deep in—stack, role, topics that matter."
@@ -528,7 +528,7 @@ export default function HomePage() {
               disabled={loading}
             />
 
-            <div className="flex flex-wrap items-center gap-4 pt-1">
+            <div className="flex flex-wrap items-center gap-4 pt-0.5">
               <button
                 type="submit"
                 disabled={loading || !canSubmit}
